@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<style>
+	body {
+		-webkit-user-select: none;
+		/* Chrome all / Safari all */
+		-moz-user-select: none;
+		/* Firefox all */
+		-ms-user-select: none;
+		/* IE 10+ */
+	}
+
+	div.settings {
+		text-align: center;
+	}
+
+	table {
+		margin-left: auto;
+		margin-right: auto;
+		border: 1px solid black;
+		border-collapse: collapse;
+	}
+
+	td {
+		padding: 0;
+		margin: 0;
+	}
+
+	img {
+		display: block;
+	}
+</style>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" src="resources/images/logo.ico" />
+	<title>Miinaharava - WEB </title>
+
+</head>
+
+<body onload="loadGame1(16,16,40)" style="background-color:grey;">
+
+	<div class="settings">
+		<b> Select difficulty:</b>
+		<br></br>
+		<button onclick="loadGame1(9,9,10)">Easy</button>
+		<button onclick="loadGame1(16,16,40)">Medium</button>
+		<button onclick="loadGame1(30,16,99)">Hard</button>
+	</div>
+	<div class="settings">
+		<button onclick="revealAll()">Reveal all cells!</button>
+	</div>
+	<p id="clock">0</p>
+	<div class="gameArea">
+		<table id=game oncontextmenu="event.preventDefault ? event.preventDefault() : event.returnValue = false"
+			onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false"
+			style="background-color:#b9b9b9;">
+		</table>
+	</div>
+	<script>
+		function updateTime() {
+		var now = new Date().getTime();
+        var oldTime = parseInt(document.getElementById("clock").innerHTML);
+        document.getElementById("clock").innerHTML = oldTime+1;
+    }
+    setInterval(updateTime, 1000);
+	</script>
+	<script src="game.js"></script>
+</body>
+
+</html>
