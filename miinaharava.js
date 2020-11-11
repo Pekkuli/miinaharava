@@ -126,7 +126,7 @@ function updateImage(x, y) {
 	} else if (value >= 10 || value == -1) {
 		img.src = "resources/images/10.png";
 	} else {
-		img.src = "resources/Images/".concat(value, ".png");
+		img.src = "resources/images/".concat(value, ".png");
 	}
 	tbl.rows[y].cells[x].appendChild(img);
 }
