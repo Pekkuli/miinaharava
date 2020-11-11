@@ -21,14 +21,30 @@
 			<button onclick="revealMines()">Reveal all mines!</button>
 		</div>
 	</div>
-	<div class="gameArea">
-		<table id=game oncontextmenu="event.preventDefault ? event.preventDefault() : event.returnValue = false"
-			onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false"
-			style="background-color:grey">
-			<caption id="clock"></caption>
-		</table>
+	<div id="main">
+		
+		<div class="control-panel inset">
+			<div id="flag-counter">
+				00
+			</div>
+			<div id="clock">
+				00:00
+			</div>
+		</div>
+
+
+		<div class="gameArea inset">
+			<table id=game oncontextmenu="event.preventDefault ? event.preventDefault() : event.returnValue = false"
+				onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">
+			</table>
+		</div>
 	</div>
 	<script src="miinaharava.js"></script>
+	<div style="position: relative;">
+		<p style="position: fixed; bottom: 0;">
+			<b>Anssi Kivinen 2020</b>
+		</p>
+	</div>
 </body>
 
 </html>

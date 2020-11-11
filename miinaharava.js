@@ -22,7 +22,6 @@ function loadGame(width, height, mines) {
 	this.width = width;
 	this.height = height;
 	this.remainingCells = width*height;
-	this.flagCount = 0;
 	this.gameStarted = false;
 	
 	// check the given mineCount parameter if more mines than cells in game --> mineCount=cells-1
@@ -36,11 +35,12 @@ function loadGame(width, height, mines) {
 	tbl.innerHTML = "";
 	
 	
-	//create caption for time / flagcout
-	var cap = tbl.createCaption();
-	cap.id = "clock";
-	cap.time_internal = 0;
-	cap.innerHTML = "<b>00:00</b>";
+	//set time and flagcout
+	var time = document.getElementById("clock");
+	time.time_internal = 0;
+	time.innerHTML = "00:00";
+	var flags = document.getElementById("flag-counter");
+	flags.innerHTML = this.mineCount;
 	
 	for (y = 0; y < height; y++) {
 		var tr = document.createElement('tr');
@@ -161,19 +161,18 @@ function rightClickCell(x, y) {
 	var cell = this.board[y][x];
 	if (cell > 19) {
 		console.log(`Cell(${x},${y}) was right clicked!`);
+		increaseFlagCount();
 		this.board[y][x] = cell - 10;
-		this.flagCount--;
 		updateImage(x, y);
 	} else if (cell < 20 && cell >= 10) {
 		console.log(`Cell(${x},${y}) was right clicked!`);
+		decreaseFlagCount();
 		this.board[y][x] = cell + 10;
-		this.flagCount++;
 		updateImage(x, y);
 	}
 }
 
 function openAdjacentCells(x, y) {
-
 	for (var i = -1; i < 2; i++) { 
 		for (var j = -1; j < 2; j++) { 
 			// check that checked coordinates are inside of the game area
@@ -198,12 +197,22 @@ function checkWinCondition() {
 }
 
 function updateTime() {
-        var timer = document.getElementById("clock");
-		timer.time_internal = timer.time_internal+1;
-		var time = parseTime(timer.time_internal);
-		
-        timer.innerHTML = "<b>"+ time +"</b>";
-    }
+	var timer = document.getElementById("clock");
+	timer.time_internal = timer.time_internal+1;
+	var time = parseTime(timer.time_internal);
+	
+	timer.innerHTML = time;
+}
+
+function increaseFlagCount() {
+	var flags = document.getElementById("flag-counter");
+	flags.innerHTML = parseInt(flags.innerHTML)+1;
+}
+
+function decreaseFlagCount() {
+	var flags = document.getElementById("flag-counter");
+	flags.innerHTML = parseInt(flags.innerHTML)-1;
+}
 
 function revealAll() {
 	if (!gameStarted) {
@@ -225,6 +234,7 @@ function revealMines() {
 	if (!gameStarted) {
 		startGame(0, 0);
 	}
+	clearInterval(timer);
 	for (x = 0; x < width; x++) {
 		for (y = 0; y < height; y++) {
 			if (this.board[y][x]%10 == 9) {
