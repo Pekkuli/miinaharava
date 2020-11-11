@@ -97,7 +97,7 @@ function adjacentMineCount(x,y) {
 }
 
 function createImage(x, y) {
-	var root = "resources/Images/";
+	var root = "resources/images/";
 	var img = document.createElement('IMG');
 	img.setAttribute('X', x);
 	img.setAttribute('Y', y);
