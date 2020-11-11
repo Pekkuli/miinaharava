@@ -1,0 +1,33 @@
+body {
+    -webkit-user-select: none;
+    /* Chrome all / Safari all */
+    -moz-user-select: none;
+    /* Firefox all */
+    -ms-user-select: none;
+    /* IE 10+ */
+}
+
+div.settings {
+    text-align: center;
+}
+
+caption {
+    padding: 10px;
+    caption-side: top;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 0;
+    margin: 0;
+}
+
+img {
+    display: block;
+}

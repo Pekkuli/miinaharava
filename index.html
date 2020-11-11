@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" href="resources/images/logo.ico" />
+	<link rel="stylesheet" type="text/css" href="miinaharava.css">
+	<title>Miinaharava - WEB </title>
+
+</head>
+
+<body onload="loadGame(16,16,40)" style="background-color:grey;">
+
+	<div class="settings">
+		<b> Select difficulty:</b>
+		<br></br>
+		<button onclick="loadGame(9,9,10)">Easy</button>
+		<button onclick="loadGame(16,16,40)">Medium</button>
+		<button onclick="loadGame(30,16,99)">Hard</button>
+		<div>
+			<button onclick="revealMines()">Reveal all mines!</button>
+		</div>
+	</div>
+	<div class="gameArea">
+		<table id=game oncontextmenu="event.preventDefault ? event.preventDefault() : event.returnValue = false"
+			onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false"
+			style="background-color:grey">
+			<caption id="clock"></caption>
+		</table>
+	</div>
+	<script src="miinaharava.js"></script>
+</body>
+
+</html>
