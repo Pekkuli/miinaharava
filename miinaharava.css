@@ -5,6 +5,7 @@ body {
     /* Firefox all */
     -ms-user-select: none;
     /* IE 10+ */
+    background: url('resources/images/tbg_top.png') repeat-x, url('resources/images/tbg_bot.png');
 }
 
 .inset {
@@ -23,6 +24,7 @@ body {
 
 #main {
     display: table;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     padding: 15px 15px 15px 15px;

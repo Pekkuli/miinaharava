@@ -21,6 +21,7 @@ function loadGame(width, height, mines) {
 	this.board = Array.from(Array(height).fill(10), () => Array.from(Array(width), () => 10)); 
 	this.width = width;
 	this.height = height;
+	this.mines = mines;
 	this.remainingCells = width*height;
 	this.gameStarted = false;
 	
@@ -75,6 +76,10 @@ function layMines(mouseX, mouseY) {
 				count++;
 }}}}
 
+function resetGame() {
+	loadGame(this.width, this.height, this.mines);
+}
+
 function adjacentMineCount(x,y) {
 	//console.log(`Original cell(${x},${y})`);
 	var count = 0;
@@ -104,31 +109,30 @@ function createImage(x, y) {
 	img.onclick = function () { leftClickCell(x, y) };
 	img.oncontextmenu = function () { rightClickCell(x, y) };
 
-	var value = this.board[y][x];
-	if (value > 19) {
-		img.src = "resources/images/MARKED.png";
-	} else if (value >= 10 || value == -1) {
-		img.src = "resources/images/10.png";
-	} else {
-		img.src = root.concat(value, ".png");
-	}
+	img.src = imagePath(this.board[y][x]);
 	return img;
 }
 
 function updateImage(x, y) {
 	var tbl = document.getElementById("game");
 	var img = tbl.rows[y].cells[x].childNodes[0];
-	tbl.rows[y].cells[x].innerHTML = "";
+	//tbl.rows[y].cells[x].innerHTML = "";
 
-	var value = this.board[y][x];
+	img.src = imagePath(this.board[y][x]);
+	//tbl.rows[y].cells[x].appendChild(img);
+}
+
+function imagePath(value) {
+	var root = "resources/images/";
+	var path = "";
 	if (value > 19) {
-		img.src = "resources/images/MARKED.png";
+		path = "resources/images/marked.png";
 	} else if (value >= 10 || value == -1) {
-		img.src = "resources/images/10.png";
+		path = "resources/images/10.png";
 	} else {
-		img.src = "resources/images/".concat(value, ".png");
+		path = root.concat(value, ".png");
 	}
-	tbl.rows[y].cells[x].appendChild(img);
+	return path;
 }
 
 function leftClickCell(x, y) {
@@ -140,9 +144,7 @@ function leftClickCell(x, y) {
 			startGame(x, y);
 		}
 		if (cell == 19) {
-			console.log("Mine hit! Game over!")
-			clearInterval(this.timer); //clear old timers
-			this.revealMines();
+			loseGame();
 		} else {
 			if (adjacentMineCount(x,y) == 0) {
 				this.board[y][x] = 0;
@@ -188,12 +190,18 @@ function openAdjacentCells(x, y) {
 
 function checkWinCondition() {
 	if (this.remainingCells <= this.mineCount) {
-		setTimeout(function(){
-			var time = document.getElementById("clock").time_internal;
-			alert("Voitit pelin! \nAikasi oli "+parseTime(time)+"!");
-		}, 100);
-		clearInterval(timer);
+		clearInterval(timer);  //clear old timers
+		var time = document.getElementById("clock").time_internal;
+		alert("Voitit pelin! \nAikasi oli "+parseTime(time)+"!");
+		resetGame()
 	}	
+}
+
+function loseGame() {
+	clearInterval(this.timer); //clear old timers
+	this.revealMines();
+	alert("Hävisit pelin!");
+	this.resetGame();
 }
 
 function updateTime() {
@@ -243,6 +251,8 @@ function revealMines() {
 			}
 		}
 	}
+	setTimeout(function(){
+	}, 100);
 }
 
 function printBoard() {
