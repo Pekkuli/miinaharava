@@ -11,18 +11,7 @@
 
 <body onload="loadGame(16,16,40)" style="background-color:grey;">
 
-	<div class="settings">
-		<b> Select difficulty:</b>
-		<br></br>
-		<button onclick="loadGame(9,9,10)">Easy</button>
-		<button onclick="loadGame(16,16,40)">Medium</button>
-		<button onclick="loadGame(30,16,99)">Hard</button>
-		<div>
-			<button onclick="revealMines()">Reveal all mines!</button>
-		</div>
-	</div>
 	<div id="main">
-		
 		<div class="control-panel inset">
 			<div id="flag-counter">
 				00
@@ -30,11 +19,18 @@
 			<div id="clock">
 				00:00
 			</div>
+			<div id="difficulties">
+				<button class="outset" onclick="loadGame(9,9,10)">Easy</button>
+				<button class="outset" onclick="loadGame(16,16,40)">Medium</button>
+				<button class="outset" onclick="loadGame(30,16,99)">Hard</button>
+			</div>
+			
+			
 		</div>
 
 
-		<div class="gameArea inset">
-			<table id=game oncontextmenu="event.preventDefault ? event.preventDefault() : event.returnValue = false"
+		<div class="gameArea">
+			<table class="inset" id=game oncontextmenu="event.preventDefault ? event.preventDefault() : event.returnValue = false"
 				onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">
 			</table>
 		</div>

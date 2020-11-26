@@ -31,24 +31,31 @@ body {
     background-color: #BEBFC0;
 }
 
-#gameArea {
-    background-color: #BEBFC0;
-}
-
 .control-panel {
     height: 38px;
     margin-bottom: 10px;
+	min-width: 350px;
+}
+
+button {
+  background-color: #BEBFC0;
+  color: black;
+  text-align: center;
+  padding: 2px 7px 0px 7px;
+  height: 36px;
+  font-size: 16px;
+  display:inline-block;
 }
 
 #flag-counter {
     font-size: 30px;
-    text-align: center;
     float: left;
+    text-align: center;
     color: red;
     background-color: black;
-    padding: 2px 7px 0px 7px;
+    padding: 2px 0px 0px 0px;
     height: 36px;
-    min-width: 51px;
+    min-width: 70px;
 }
 
 #clock {
@@ -57,18 +64,17 @@ body {
     text-align: center;
     color: red;
     background-color: black;
-    padding: 2px 7px 0px 7px;
+    padding: 2px 0px 0px 0px;
     height: 36px;
-    min-width: 51px;
+    min-width: 70px;
 }
 
-.settings {
-    text-align: center;
-}
-
-caption {
-    padding: 10px;
-    caption-side: top;
+#difficulties {
+	padding: 2px 0px 2px 0px;
+    height: 36px;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 table {

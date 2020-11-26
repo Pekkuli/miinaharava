@@ -24,6 +24,7 @@ function loadGame(width, height, mines) {
 	this.mines = mines;
 	this.remainingCells = width*height;
 	this.gameStarted = false;
+	this.gameEnded = false;
 	
 	// check the given mineCount parameter if more mines than cells in game --> mineCount=cells-1
 	if (mines >= remainingCells) {
@@ -34,7 +35,6 @@ function loadGame(width, height, mines) {
 
 	var tbl = document.getElementById("game");
 	tbl.innerHTML = "";
-	
 	
 	//set time and flagcout
 	var time = document.getElementById("clock");
@@ -81,31 +81,21 @@ function resetGame() {
 }
 
 function adjacentMineCount(x,y) {
-	//console.log(`Original cell(${x},${y})`);
 	var count = 0;
-	//check 3x3 area around given coordinates
-	for (i = -1; i < 2; i++) { 
+	for (i = -1; i < 2; i++) {	//check 3x3 area around given coordinates
 		for (j = -1; j < 2; j++) { 
-			// check that checked coordinates are inside of the game area
-			if ((x + i >= 0 && x + i < width && y + j >= 0 && y + j < height)) {
-				//dont check the original cell
-				if (!((x + i) == x && (y + j) == y)) {
-					// if cell is a mine
-					if (this.board[y+j][x+i]%10 ==9) { 	
+			if ((x + i >= 0 && x + i < width && y + j >= 0 && y + j < height)) {	// check that checked coordinates are inside of the game area
+				if (!((x + i) == x && (y + j) == y)) {	//dont check the original cell
+					if (this.board[y+j][x+i]%10 ==9) { 	// if cell is a mine
 						count++;
-					}
-				}
-			}
-		}
-	}
+	}}}}}
 	return count;
 }
 
 function createImage(x, y) {
-	var root = "resources/images/";
 	var img = document.createElement('IMG');
-	img.setAttribute('X', x);
-	img.setAttribute('Y', y);
+	//img.setAttribute('X', x);
+	//img.setAttribute('Y', y);
 	img.onclick = function () { leftClickCell(x, y) };
 	img.oncontextmenu = function () { rightClickCell(x, y) };
 
@@ -116,17 +106,14 @@ function createImage(x, y) {
 function updateImage(x, y) {
 	var tbl = document.getElementById("game");
 	var img = tbl.rows[y].cells[x].childNodes[0];
-	//tbl.rows[y].cells[x].innerHTML = "";
-
 	img.src = imagePath(this.board[y][x]);
-	//tbl.rows[y].cells[x].appendChild(img);
 }
 
 function imagePath(value) {
 	var root = "resources/images/";
 	var path = "";
 	if (value > 19) {
-		path = "resources/images/marked.png";
+		path = "resources/images/MARKED.png";
 	} else if (value >= 10 || value == -1) {
 		path = "resources/images/10.png";
 	} else {
@@ -136,41 +123,46 @@ function imagePath(value) {
 }
 
 function leftClickCell(x, y) {
-	var cell = this.board[y][x];
-
-	if (cell < 20 && cell >= 10) {
-		console.log(`Cell(${x},${y}) was left clicked!`);
-		if (!gameStarted) {
-			startGame(x, y);
-		}
-		if (cell == 19) {
-			loseGame();
-		} else {
-			if (adjacentMineCount(x,y) == 0) {
-				this.board[y][x] = 0;
-				openAdjacentCells(x, y);
-			} else {
-				this.board[y][x] = adjacentMineCount(x,y);
+	
+	if (!this.gameEnded){
+		var cell = this.board[y][x];
+		if (cell < 20 && cell >= 10) {
+			console.log(`Cell(${x},${y}) was left clicked!`);
+			if (!gameStarted) {
+				startGame(x, y);
 			}
-			this.remainingCells--;
-			updateImage(x, y);
-			checkWinCondition();
+			if (cell == 19) {
+				loseGame();
+			} else {
+				if (adjacentMineCount(x,y) == 0) {
+					this.board[y][x] = 0;
+					openAdjacentCells(x, y);
+				} else {
+					this.board[y][x] = adjacentMineCount(x,y);
+				}
+				this.remainingCells--;
+				updateImage(x, y);
+				checkWinCondition();
+			}
 		}
 	}
 }
 
 function rightClickCell(x, y) {
-	var cell = this.board[y][x];
-	if (cell > 19) {
-		console.log(`Cell(${x},${y}) was right clicked!`);
-		increaseFlagCount();
-		this.board[y][x] = cell - 10;
-		updateImage(x, y);
-	} else if (cell < 20 && cell >= 10) {
-		console.log(`Cell(${x},${y}) was right clicked!`);
-		decreaseFlagCount();
-		this.board[y][x] = cell + 10;
-		updateImage(x, y);
+	if (!this.gameEnded){
+		var cell = this.board[y][x];
+		if (cell > 19) {
+			console.log(`Cell(${x},${y}) was right clicked!`);
+			changeFlagCount(1);
+			this.board[y][x] = cell - 10;
+			updateImage(x, y);
+		} else if (cell < 20 && cell >= 10) {
+			console.log(`Cell(${x},${y}) was right clicked!`);
+			changeFlagCount(-1);
+			//decreaseFlagCount();
+			this.board[y][x] = cell + 10;
+			updateImage(x, y);
+		}
 	}
 }
 
@@ -200,26 +192,20 @@ function checkWinCondition() {
 function loseGame() {
 	clearInterval(this.timer); //clear old timers
 	this.revealMines();
-	alert("Hävisit pelin!");
-	this.resetGame();
+	this.gameEnded = true;
+	//this.resetGame();
 }
 
 function updateTime() {
 	var timer = document.getElementById("clock");
 	timer.time_internal = timer.time_internal+1;
 	var time = parseTime(timer.time_internal);
-	
 	timer.innerHTML = time;
 }
 
-function increaseFlagCount() {
+function changeFlagCount(value) {
 	var flags = document.getElementById("flag-counter");
-	flags.innerHTML = parseInt(flags.innerHTML)+1;
-}
-
-function decreaseFlagCount() {
-	var flags = document.getElementById("flag-counter");
-	flags.innerHTML = parseInt(flags.innerHTML)-1;
+	flags.innerHTML = parseInt(flags.innerHTML)+value;
 }
 
 function revealAll() {
@@ -250,14 +236,6 @@ function revealMines() {
 				updateImage(x,y);
 			}
 		}
-	}
-	setTimeout(function(){
-	}, 100);
-}
-
-function printBoard() {
-	for (x=0;x<height;x++){
-		console.log(board[x]);
 	}
 }
 
