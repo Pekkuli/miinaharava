@@ -11,7 +11,7 @@
 
 <body onload="loadGame(16,16,40)" style="background-color:grey;">
 
-	<div id="main">
+	<div id="main" class="outset">
 		<div class="control-panel inset">
 			<div id="flag-counter">
 				00
@@ -24,10 +24,7 @@
 				<button class="outset" onclick="loadGame(16,16,40)">Medium</button>
 				<button class="outset" onclick="loadGame(30,16,99)">Hard</button>
 			</div>
-			
-			
 		</div>
-
 
 		<div class="gameArea">
 			<table class="inset" id=game oncontextmenu="event.preventDefault ? event.preventDefault() : event.returnValue = false"
@@ -35,10 +32,22 @@
 			</table>
 		</div>
 	</div>
+
+	<div id="WinLoseScreen" class="modal" >
+		<div class="modal-content" >
+			<b>Hävisit pelin!</b>
+			<span class="Stats"></span>
+			<p id="WinLoseStatus">Parempi onni ensi kerralla!</p>
+			<p><b>( ͡° ͜ʖ ͡°)</b></p>
+
+			<button class="outset" onclick="resetGame();modal.style.display = 'none'"><b>Pelaa uudestaan!</b></button>
+		</div>
+	</div>
+
 	<script src="miinaharava.js"></script>
 	<div style="position: relative;">
 		<p style="position: fixed; bottom: 0;">
-			<b>Anssi Kivinen 2020</b>
+			<b onclick="modal.style.display = 'block'">Anssi Kivinen 2020</b>
 		</p>
 	</div>
 </body>

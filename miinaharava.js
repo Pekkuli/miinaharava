@@ -1,18 +1,7 @@
 
-function createGame(width, height, mines) {
-	this.board = Array.from(Array(height).fill(10), () => Array.from(Array(width), () => 10));
-	var count = 0;
+var modal = document.getElementById("WinLoseScreen");
 
-	while (count < mines) {
-		var x = Math.floor(Math.random() * (width));
-		var y = Math.floor(Math.random() * (height));
-		if (this.board[y][x] == 10) {
-			this.board[y][x] = 19;
-			count++;
-		}
-	}
-	loadGame();
-}
+
 
 
 function loadGame(width, height, mines) {
@@ -36,7 +25,7 @@ function loadGame(width, height, mines) {
 	var tbl = document.getElementById("game");
 	tbl.innerHTML = "";
 	
-	//set time and flagcout
+	//set time and flagcount
 	var time = document.getElementById("clock");
 	time.time_internal = 0;
 	time.innerHTML = "00:00";
@@ -80,18 +69,6 @@ function resetGame() {
 	loadGame(this.width, this.height, this.mines);
 }
 
-function adjacentMineCount(x,y) {
-	var count = 0;
-	for (i = -1; i < 2; i++) {	//check 3x3 area around given coordinates
-		for (j = -1; j < 2; j++) { 
-			if ((x + i >= 0 && x + i < width && y + j >= 0 && y + j < height)) {	// check that checked coordinates are inside of the game area
-				if (!((x + i) == x && (y + j) == y)) {	//dont check the original cell
-					if (this.board[y+j][x+i]%10 ==9) { 	// if cell is a mine
-						count++;
-	}}}}}
-	return count;
-}
-
 function createImage(x, y) {
 	var img = document.createElement('IMG');
 	//img.setAttribute('X', x);
@@ -132,6 +109,7 @@ function leftClickCell(x, y) {
 				startGame(x, y);
 			}
 			if (cell == 19) {
+				console.log(`Game lost! Mine was clicked at (${x},${y})!`);
 				loseGame();
 			} else {
 				if (adjacentMineCount(x,y) == 0) {
@@ -166,6 +144,19 @@ function rightClickCell(x, y) {
 	}
 }
 
+function adjacentMineCount(x,y) {
+	var count = 0;
+	for (i = -1; i < 2; i++) {
+		for (j = -1; j < 2; j++) { 
+			// check that checked coordinates are inside of the game area
+			if ((x + i >= 0 && x + i < width && y + j >= 0 && y + j < height)) {
+				if (!((x + i) == x && (y + j) == y)) {	//dont check the original cell
+					if (this.board[y+j][x+i]%10 ==9) { 	// if cell is a mine
+						count++;
+	}}}}}
+	return count;
+}
+
 function openAdjacentCells(x, y) {
 	for (var i = -1; i < 2; i++) { 
 		for (var j = -1; j < 2; j++) { 
@@ -184,15 +175,23 @@ function checkWinCondition() {
 	if (this.remainingCells <= this.mineCount) {
 		clearInterval(timer);  //clear old timers
 		var time = document.getElementById("clock").time_internal;
-		alert("Voitit pelin! \nAikasi oli "+parseTime(time)+"!");
-		resetGame()
+		//alert("Voitit pelin! \nAikasi oli "+parseTime(time)+"!");
+		//resetGame()
+		var text = "Voitit pelin! \nAikasi oli "+parseTime(time)+"!";
+		document.getElementById("WinLoseStatus").innerHTML = text;
+		modal.style.display = "block";
 	}	
+}
+
+function openRemainingCells(x, y) {
+	
 }
 
 function loseGame() {
 	clearInterval(this.timer); //clear old timers
 	this.revealMines();
 	this.gameEnded = true;
+	modal.style.display = 'block'
 	//this.resetGame();
 }
 
