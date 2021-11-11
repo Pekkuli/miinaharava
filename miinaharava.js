@@ -2,8 +2,6 @@
 var modal = document.getElementById("WinLoseScreen");
 
 
-
-
 function loadGame(width, height, mines) {
 	console.log(`Loading game! Width: ${width} Height: ${height} Mines: ${mines}`)
 	clearInterval(this.timer); //clear old timers
@@ -177,8 +175,10 @@ function checkWinCondition() {
 		var time = document.getElementById("clock").time_internal;
 		//alert("Voitit pelin! \nAikasi oli "+parseTime(time)+"!");
 		//resetGame()
-		var text = "Voitit pelin! \nAikasi oli "+parseTime(time)+"!";
-		document.getElementById("WinLoseStatus").innerHTML = text;
+		var topic = "Voitit pelin!"
+		var status = "Aikasi oli "+parseTime(time)+"!";
+		document.getElementById("WinLoseTopic").innerHTML = topic;
+		document.getElementById("WinLoseStatus").innerHTML = status;
 		modal.style.display = "block";
 	}	
 }
@@ -191,6 +191,12 @@ function loseGame() {
 	clearInterval(this.timer); //clear old timers
 	this.revealMines();
 	this.gameEnded = true;
+
+	var topic = "Hävisit pelin!"
+	var status = "Parempi onni ensi kerralla!";
+	document.getElementById("WinLoseTopic").innerHTML = topic;
+	document.getElementById("WinLoseStatus").innerHTML = status;
+
 	modal.style.display = 'block'
 	//this.resetGame();
 }
