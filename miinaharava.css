@@ -24,23 +24,23 @@ body {
     margin-right: auto;
     padding: 15px 15px 15px 15px;
     background-color: #BEBFC0;
-    min-height: 350px;
-    min-width: 350px;
-}
-
-.control-panel {
-    height: 38px;
-    margin-bottom: 10px;
+    min-height: 285px;
 }
 
 button {
   background-color: #BEBFC0;
   color: black;
   text-align: center;
-  padding: 2px 7px 0px 7px;
+  padding: 0px 5px 0px 5px;
   height: 36px;
   font-size: 16px;
   display:inline-block;
+}
+
+.control-panel {
+    max-height: 38px;
+    margin-bottom: 10px;
+    min-width: 410px;
 }
 
 #flag-counter {
@@ -50,7 +50,6 @@ button {
     color: red;
     background-color: black;
     padding: 2px 0px 0px 0px;
-    height: 36px;
     min-width: 70px;
 }
 
@@ -61,16 +60,14 @@ button {
     color: red;
     background-color: black;
     padding: 2px 0px 0px 0px;
-    height: 36px;
     min-width: 70px;
 }
 
 #difficulties {
-	padding: 2px 0px 2px 0px;
-    height: 36px;
-    width: 200px;
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 table {

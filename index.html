@@ -9,7 +9,8 @@
 
 </head>
 
-<body onload="loadGame(16,16,40)" style="background-color:grey;">
+<body onload="loadGame(16,16,40)" oncontextmenu="event.preventDefault ? event.preventDefault() : event.returnValue = false"
+onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">
 
 	<div id="main" class="outset">
 		<div class="control-panel inset">
@@ -23,17 +24,18 @@
 				<button class="outset" onclick="loadGame(9,9,10)">Easy</button>
 				<button class="outset" onclick="loadGame(16,16,40)">Medium</button>
 				<button class="outset" onclick="loadGame(30,16,99)">Hard</button>
+				<button class="outset" onclick="loadGame(30,32,198)">MEGA</button>
 			</div>
+			
 		</div>
 
 		<div class="gameArea">
-			<table class="inset" id=game oncontextmenu="event.preventDefault ? event.preventDefault() : event.returnValue = false"
-				onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">
+			<table class="inset" id=game>
 			</table>
 		</div>
 	</div>
 
-	<div id="WinLoseScreen" class="modal" >
+	<div id="WinLoseScreen" class="modal" style="display: none;">
 		<div class="modal-content" >
 			<b id="WinLoseTopic">Tämän ei pitäisi olla mahdollista</b>
 			<span class="Stats"></span>
@@ -44,7 +46,7 @@
 		</div>
 	</div>
 
-	<script src="miinaharava.js"></script>
+	<script src="miinaharava.js" type="text/javascript"></script>
 	<div style="position: relative;">
 		<p style="position: fixed; bottom: 0;">
 			<b onclick="modal.style.display = 'block'">Anssi Kivinen 2020</b>

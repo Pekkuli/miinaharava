@@ -45,7 +45,7 @@ function loadGame(width, height, mines) {
 
 function startGame(mouseX, mouseY) {
 	console.log(`Starting game! (${mouseX},${mouseY})`)
-	
+
 	this.gameStarted = true;
 	layMines(mouseX, mouseY);
 	this.timer = setInterval(updateTime, 1000);
@@ -71,11 +71,26 @@ function createImage(x, y) {
 	var img = document.createElement('IMG');
 	//img.setAttribute('X', x);
 	//img.setAttribute('Y', y);
-	img.onclick = function () { leftClickCell(x, y) };
-	img.oncontextmenu = function () { rightClickCell(x, y) };
+	img.onmouseup = (e) => determineClick(e, x, y);
+	// img.onclick = function () { leftClickCell(x, y) };
+	// img.oncontextmenu = function () { rightClickCell(x, y) };
+	// img.ondblclick = function () { openRemainingCells(x, y) };
 
 	img.src = imagePath(this.board[y][x]);
 	return img;
+}
+
+function determineClick(e, x, y){
+	e = e || window.event;
+	left = false
+	right = false
+	if (e.button == "0"){
+		leftClickCell(x, y);
+	} else if (e.button == "1") {
+		openRemainingCells(x, y);
+	} else if (e.button == "2") {
+		rightClickCell(x, y);
+	}
 }
 
 function updateImage(x, y) {
@@ -102,7 +117,7 @@ function leftClickCell(x, y) {
 	if (!this.gameEnded){
 		var cell = this.board[y][x];
 		if (cell < 20 && cell >= 10) {
-			console.log(`Cell(${x},${y}) was left clicked!`);
+			console.log(`Cell (${x},${y}) was left clicked!`);
 			if (!gameStarted) {
 				startGame(x, y);
 			}
@@ -111,6 +126,7 @@ function leftClickCell(x, y) {
 				loseGame();
 			} else {
 				if (adjacentMineCount(x,y) == 0) {
+					console.log(`Empty cell found at (${x},${y}), opening adjacent cells!`);
 					this.board[y][x] = 0;
 					openAdjacentCells(x, y);
 				} else {
@@ -128,12 +144,12 @@ function rightClickCell(x, y) {
 	if (!this.gameEnded){
 		var cell = this.board[y][x];
 		if (cell > 19) {
-			console.log(`Cell(${x},${y}) was right clicked!`);
+			console.log(`Cell(${x},${y}) was right clicked (flag removed)!`);
 			changeFlagCount(1);
 			this.board[y][x] = cell - 10;
 			updateImage(x, y);
 		} else if (cell < 20 && cell >= 10) {
-			console.log(`Cell(${x},${y}) was right clicked!`);
+			console.log(`Cell(${x},${y}) was right clicked (flag added)!`);
 			changeFlagCount(-1);
 			//decreaseFlagCount();
 			this.board[y][x] = cell + 10;
@@ -175,7 +191,7 @@ function checkWinCondition() {
 		var time = document.getElementById("clock").time_internal;
 		//alert("Voitit pelin! \nAikasi oli "+parseTime(time)+"!");
 		//resetGame()
-		var topic = "Voitit pelin!"
+		var topic = "Voitit pelin!";
 		var status = "Aikasi oli "+parseTime(time)+"!";
 		document.getElementById("WinLoseTopic").innerHTML = topic;
 		document.getElementById("WinLoseStatus").innerHTML = status;
@@ -184,7 +200,40 @@ function checkWinCondition() {
 }
 
 function openRemainingCells(x, y) {
-	
+	var cell = this.board[y][x];
+	console.log(`Number ${cell} cell at (${x},${y}) was double clicked!`)
+	if (cell < 10) {
+		
+		var count = flagCount(x, y);
+		if (cell <= count) {
+			console.log("Enough flags! Opening remaining cells! (flags: "+count+", needed: "+cell+")")
+			openAdjacentCells(x, y);
+		} else {
+			console.log("Not enough flags! (flags: "+count+", needed: "+cell+")")
+		}
+	}
+}
+
+function flagCount(x, y) {
+	console.log("Checking the amount of adjacent flags!")
+	var count = 0;
+	for (var i = -1; i < 2; i++) { 
+		for (var j = -1; j < 2; j++) { 
+			// check that checked coordinates are inside of the game area
+			var dx = x + i;
+			var dy = y + j;
+			if ((dx >= 0 && dx < width && dy >= 0 && dy < height)) {
+				//dont check the original cell
+				if (!(j == 0 && i == 0)) {
+					var cell = this.board[dy][dx];
+					if (cell > 19) {
+						count++;
+					}
+				}
+			}	
+		}
+	}
+	return count;
 }
 
 function loseGame() {
