@@ -57,7 +57,7 @@ function layMines(mouseX, mouseY) {
 	while (count < this.mineCount) {
 		var x = Math.floor(Math.random() * (width));
 		var y = Math.floor(Math.random() * (height));
-		if (x != mouseX && y != mouseY) { //skip the original cell
+		if (x != mouseX || y != mouseY) { // skip only the original cell
 			if (this.board[y][x] == 10) { // check that the cell is not already a mine
 				this.board[y][x] = 19;
 				count++;
